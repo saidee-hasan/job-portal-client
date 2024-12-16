@@ -1,21 +1,24 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import LottleData from "../assets/Animation.json"
 import Lottie from 'lottie-react';
+import { AuthContext } from '../Provider/AuthProvider';
 
 export default function Register() {
   const { register, handleSubmit, formState: { errors }, watch } = useForm();
+  const {createUser} = useContext(AuthContext)
   const password = watch("password"); // Watching the password field
 
   const onSubmit = (data) => {
+  createUser(data.email,data.password)
     console.log(data);
     // Handle registration logic here (e.g., API call)
   };
 
   return (
     <div className="md:flex items-center justify-center min-h-screen bg-gray-100">
-      <Lottie className='md:w-96 ' animationData={LottleData} />
-      <div className="bg-white p-8 rounded-lg shadow-md w-full mx-auto sm:w-96 md:w-96 max-w-sm">
+      <Lottie className='md:w-96 w-full' animationData={LottleData} />
+      <div className="bg-white p-8 rounded-lg shadow-md w-full sm:w-full md:w-96 max-w-sm">
         <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
