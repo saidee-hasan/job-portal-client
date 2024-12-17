@@ -1,6 +1,14 @@
 import { Link } from "react-router-dom";
+import { AuthContext } from "../Provider/AuthProvider";
+import { useContext } from "react";
 
 function Navbar() {
+  const {signOutUser,user}=useContext(AuthContext)
+const handleSignOut =()=>{
+  signOutUser ()
+  .then(res => console.log(res))
+  .catch(err => console.error(err));
+}
     return (
       <div>
         <div className="navbar bg-base-100 shadow-lg"> {/* Added shadow for depth */}
@@ -38,8 +46,47 @@ function Navbar() {
             </ul>
           </div>
           <div className="navbar-end">
-            <Link to={'/register'}>       <a className="btn btn-accent">Login</a> </Link>
-     {/* Changed to btn-accent for visibility */}
+          {
+                    user ? (
+                        <button
+                            className='bg-red-600 text-white p-2 rounded-md hover:bg-red-700 transition duration-200'
+                            onClick={handleSignOut}
+                            aria-label="Sign Out"
+                        >
+                            Sign Out
+                        </button>
+                    ) : (
+                        <Link to={'/register'}>
+                            <button
+                                className='bg-green-600 text-white p-2 rounded-md hover:bg-green-700 transition duration-200'
+                                aria-label="Login"
+                            >
+                                Login
+                            </button>
+                        </Link>
+                    )
+                }
+     <div className="dropdown dropdown-end">
+      <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+        <div className="w-10 rounded-full">
+          <img
+            alt="Tailwind CSS Navbar component"
+            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+        </div>
+      </div>
+      <ul
+        tabIndex={0}
+        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+        <li>
+          <a className="justify-between">
+            Profile
+            <span className="badge">New</span>
+          </a>
+        </li>
+        <li><a>Settings</a></li>
+        <li ><a>Logout</a></li>
+      </ul>
+    </div>
           </div>
         </div>
         <hr />

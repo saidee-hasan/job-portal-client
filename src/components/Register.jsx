@@ -91,6 +91,11 @@ export default function Register() {
             />
             {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword.message}</p>}
           </div>
+          <p class="text-gray-700 text-center">
+    <a href="/login" class="text-blue-500 hover:text-blue-700 font-semibold">
+        Already logged in?
+    </a>
+</p>
 
           <button
             type="submit"

@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../../firebase.init";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 
 export const AuthContext = createContext();
@@ -15,14 +15,47 @@ function AuthProvider({ children }) {
     return createUserWithEmailAndPassword(auth, email, password);
   
   };
+  const loginUser = async (email, password) => {
+    setLoading(true)
+    return signInWithEmailAndPassword(auth, email, password);
+  };
+ 
 
-  const value = {
-  createUser,
-  user
+
+
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    
+        console.log("Currently logged in User:", currentUser);
+        setUser(currentUser)
+     setLoading(false)
+     
+    });
+
+    // Cleanup function to unsubscribe from the listener
+
+    return () => {
+      unsubscribe();
+    };
+  }, [auth]);
+const signOutUser = ()=>{
+  setLoading(true)
+  return signOut(auth)
+}
+
+  const authInfo = {
+    createUser,
+    loginUser,
+    user,
+    signOutUser,
+    loading
+   
+  
   };
 
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider value={authInfo}>
       {children}
     </AuthContext.Provider>
   );
