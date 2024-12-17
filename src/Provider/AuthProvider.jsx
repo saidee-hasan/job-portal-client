@@ -1,10 +1,15 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import {
+  createUserWithEmailAndPassword,
+ 
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth/cordova";
+
+
+import React, { createContext, useEffect, useState } from "react";
+export const AuthContext = createContext(null);
 import { auth } from "../../firebase.init";
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
-
-
-export const AuthContext = createContext();
-
 
 function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -53,11 +58,10 @@ const signOutUser = ()=>{
    
   
   };
-
   return (
-    <AuthContext.Provider value={authInfo}>
-      {children}
-    </AuthContext.Provider>
+    <div>
+      <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
+    </div>
   );
 }
 
