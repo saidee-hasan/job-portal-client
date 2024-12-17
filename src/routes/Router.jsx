@@ -3,9 +3,12 @@ import MainLayout from "../Layout/MainLayout";
 
 import Register from "../components/Register";
 import Login from "../components/Login";
+import Home from "../pages/Home";
 
 const router =  createBrowserRouter([
-    {path:"/",element:<MainLayout/>},
+    {path:"/",element:<MainLayout/>,children:[
+        {path:"/",element:<Home/>}
+    ]},
     {path:"/register",element:<Register/>},
     {path:"/login",element:<Login/>}
 
