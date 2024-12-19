@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram } from 'react-icons/fa';
-
+import Logo from "../assets/logo.png"
 function Footer() {
   return (
     <footer className="bg-white text-black py-8 px-4 border-t border-gray-300 shadow-sm">
@@ -8,7 +8,7 @@ function Footer() {
         {/* Logo & Description */}
         <div className="flex flex-col items-center md:items-start">
           <img
-            src="https://img.icons8.com/clouds/100/000000/job.png"
+            src={Logo}
             alt="Job Portal Logo"
             className="w-20"
           />
