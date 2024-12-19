@@ -1,15 +1,14 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../Provider/AuthProvider';
 import Lottie from 'lottie-react';
 import LoginData from '../assets/logon.json';
-import { Navigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { loginUser,user } = useContext(AuthContext);
-
+  const { loginUser, user } = useContext(AuthContext);
+  const navigate = useNavigate();  // Hook for navigation
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -17,6 +16,13 @@ function Login() {
     console.log('email:', email);
     console.log('Password:', password);
   };
+
+  // Redirect to home page if user is already logged in
+  useEffect(() => {
+    if (user) {
+      navigate('/'); // Navigate to home page if user is authenticated
+    }
+  }, [user, navigate]);
 
   return (
     <div className="flex flex-col md:flex-row items-center justify-center min-h-screen bg-gray-50 p-4">
