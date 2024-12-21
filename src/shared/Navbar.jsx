@@ -34,7 +34,7 @@ function Navbar() {
               tabIndex={0}
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
               <li><NavLink to="/" activeClassName="text-orange-400">Home</NavLink></li>
-              <li><NavLink to="/job" activeClassName="text-orange-400">Job</NavLink></li>
+              <li><NavLink to="/my-application" activeClassName="text-orange-400">MyApplication</NavLink></li>
               <li><NavLink to="/about" activeClassName="text-orange-400">About</NavLink></li>
             </ul>
           </div>
@@ -44,7 +44,7 @@ function Navbar() {
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
             <li><NavLink to="/" activeClassName="text-orange-400">Home</NavLink></li>
-            <li><NavLink to="/item2" activeClassName="text-orange-400">Item 2</NavLink></li>
+            <li><NavLink to="/my-application" activeClassName="text-orange-400">MyApplication</NavLink></li>
             <li><NavLink to="/about" activeClassName="text-orange-400">About</NavLink></li>
           </ul>
         </div>

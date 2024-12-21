@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLoaderData, useParams } from 'react-router-dom';
+import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import Swal from 'sweetalert2';
 
@@ -20,7 +20,7 @@ function JobsDetails() {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
-
+const navigate = useNavigate()
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -49,9 +49,10 @@ function JobsDetails() {
           icon: "success"
         });
 
-
+     
 
         setIsModalOpen(false);
+        navigate('/my-application')
       }
     })
 
