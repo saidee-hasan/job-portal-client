@@ -7,43 +7,46 @@ function MyApplication() {
 
     useEffect(() => {
         fetch(`http://localhost:5000/jobs-application?email=${user.email}`)
-            .then(res => res.json())
-            .then(data => {
+            .then((res) => res.json())
+            .then((data) => {
                 setJobs(data);
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error('Error fetching jobs:', error);
             });
     }, [user.email]);
-console.log(jobs)
+
     return (
-        <div className='mt-16 container mx-auto'>
+        <div className="md:mt-16  mt-20 container mx-auto  px-4">
+            <h2 className="text-2xl font-semibold text-center mb-8">My Applications</h2>
             <div className="overflow-x-auto">
-                <table className="table w-full">
-                    {/* head */}
+                <table className="table-auto w-full border border-gray-300 text-left">
+                    {/* Table Head */}
                     <thead>
-                        <tr className="bg-gray-200">
-                            <th>
+                        <tr className="bg-gray-200 text-gray-700">
+                            <th className="p-4">
                                 <label>
                                     <input type="checkbox" className="checkbox" />
                                 </label>
                             </th>
-                            <th>Name</th>
-                            <th>Job</th>
-                            <th>Company</th>
-                            <th>Action</th>
+                            <th className="p-4">Name</th>
+                            <th className="p-4">Job</th>
+                            <th className="p-4">Company</th>
+                            <th className="p-4">Action</th>
                         </tr>
                     </thead>
+
+                    {/* Table Body */}
                     <tbody>
                         {jobs.length > 0 ? (
                             jobs.map((application) => (
                                 <tr key={application._id} className="hover:bg-gray-100">
-                                    <th>
+                                    <td className="p-4">
                                         <label>
                                             <input type="checkbox" className="checkbox" />
                                         </label>
-                                    </th>
-                                    <td>
+                                    </td>
+                                    <td className="p-4">
                                         <div className="flex items-center gap-3">
                                             <div className="avatar">
                                                 <div className="mask mask-squircle h-12 w-12">
@@ -54,34 +57,44 @@ console.log(jobs)
                                                 </div>
                                             </div>
                                             <div>
-                                                <div className="font-bold">{application.applicant_name}</div>
-                                                <div className="text-sm opacity-50">{application.applicant_email}</div>
+                                                <div className="font-bold text-gray-800">{application.applicant_name}</div>
+                                                <div className="text-sm text-gray-500">{application.applicant_email}</div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td>
+                                    <td className="p-4">
                                         <span className="badge badge-ghost badge-sm">{application.title}</span>
                                     </td>
-                                    <td>{application.company}</td>
-                                    <th>
-                                        <a href={application.githubLink} className="btn btn-ghost btn-xs">Details</a>
-                                    </th>
+                                    <td className="p-4">{application.company}</td>
+                                    <td className="p-4">
+                                        <a
+                                            href={application.githubLink}
+                                            className="btn btn-ghost btn-xs text-blue-500 hover:text-blue-700"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Delete
+                                        </a>
+                                    </td>
                                 </tr>
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="5" className="text-center py-4">No applications found.</td>
+                                <td colSpan="5" className="text-center py-6 text-gray-500">
+                                    No applications found.
+                                </td>
                             </tr>
                         )}
                     </tbody>
-                    {/* foot */}
+
+                    {/* Table Footer */}
                     <tfoot>
-                        <tr className="bg-gray-200">
-                            <th></th>
-                            <th>Name</th>
-                            <th>Job</th>
-                            <th>Company</th>
-                            <th>Action</th>
+                        <tr className="bg-gray-200 text-gray-700">
+                            <th className="p-4"></th>
+                            <th className="p-4">Name</th>
+                            <th className="p-4">Job</th>
+                            <th className="p-4">Company</th>
+                            <th className="p-4">Action</th>
                         </tr>
                     </tfoot>
                 </table>
