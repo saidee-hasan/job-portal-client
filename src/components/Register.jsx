@@ -3,14 +3,20 @@ import { useForm } from 'react-hook-form';
 import Lottie from 'lottie-react';
 import { AuthContext } from '../Provider/AuthProvider';
 import LottleData from '../assets/Animation.json';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function Register() {
   const { register, handleSubmit, formState: { errors }, watch } = useForm();
   const { createUser } = useContext(AuthContext);
   const password = watch("password");
-
+const location = useLocation();
+const navigate = useNavigate();
+const form = location.state || '/';
   const onSubmit = (data) => {
-    createUser(data.email, data.password);
+    createUser(data.email, data.password)
+    .then(res=>{
+      navigate(form)
+    })
     console.log(data);
   };
 

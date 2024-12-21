@@ -6,7 +6,7 @@ import Cricle from"../assets/Group.png"
 function Banner() {
   return (
     <div>
-      <div className="hero bg-base-100 lg:max-h-96">
+      <div className="hero bg-base-100 ">
         <div className="hero-content flex-col lg:flex-row-reverse">
         <motion.img
 
