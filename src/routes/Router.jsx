@@ -10,11 +10,13 @@ import PrivateRoute from "./PrivateRoute";
 import MyApplication from "../components/MyApplication";
 import About from "../components/About";
 import AddJobs from "../pages/AddJobs";
+import MyPostedJobs from "../pages/MyPostedJobs";
 
 const router =  createBrowserRouter([
     {path:"/",element:<MainLayout/>,children:[
         {path:"/",element:<Home/>,loader:()=> fetch('http://localhost:5000/jobs')},
         {path:'/addJob',element:<PrivateRoute><AddJobs/></PrivateRoute>},
+        {path:"/my-posted-jobs",element: <PrivateRoute><MyPostedJobs/></PrivateRoute>},
         {path:"/about",element:<About/>},
         {path:"/my-application",element: <PrivateRoute><MyApplication/></PrivateRoute>,loader:()=> fetch('http://localhost:5000/jobs')},
         {path:"/jobs/:id",element:<PrivateRoute><JobsDetails/></PrivateRoute>  ,loader:({params})=> fetch(`http://localhost:5000/jobs/${params.id}`)},

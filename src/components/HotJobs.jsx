@@ -16,7 +16,7 @@ function HotJobs() {
   }, [data]);
 
   const handleApplyNow = (job) => {
-   
+    // Handle apply functionality here
   };
 
   return (
@@ -38,10 +38,8 @@ function HotJobs() {
                 <div className="ml-4">
                   <h2 className="text-xl font-semibold">{job.title}</h2>
                   <p className="text-gray-600 gap-3 flex">
-                 
-                      <FaMapLocationDot className="mt-1" color="green" />
-             
-                    <strong className=""> {job.location}</strong>
+                    <FaMapLocationDot className="mt-1" color="green" />
+                    <strong className="">{job.location}</strong>
                   </p>
                 </div>
               </div>
@@ -57,26 +55,31 @@ function HotJobs() {
 
               <h4 className="font-semibold mt-4">Requirements:</h4>
               <ul className="list-disc list-inside mb-4">
-                {job.requirements.map((req, index) => (
-                  <li key={index} className="text-gray-600 border-b p-2">
-                    {req}
-                  </li>
-                ))}
+                {/* Check if job.requirements is an array before mapping */}
+                {(Array.isArray(job.requirements) && job.requirements.length > 0) ? (
+                  job.requirements.map((req, index) => (
+                    <li key={index} className="text-gray-600 border-b p-2">
+                      {req}
+                    </li>
+                  ))
+                ) : (
+                  <li className="text-gray-600">No requirements listed</li>
+                )}
               </ul>
 
               <p className="text-gray-600">
                 <strong>Salary Range:</strong> {job.salaryRange.min} -{" "}
                 {job.salaryRange.max} {job.salaryRange.currency}
               </p>
-<Link to={`/jobs/${job._id}`}>
-              <button
-                onClick={() => handleApplyNow(job)}
-                className="mt-4 bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition"
-              >
-                Apply Now
-              </button>
-              </Link>
 
+              <Link to={`/jobs/${job._id}`}>
+                <button
+                  onClick={() => handleApplyNow(job)}
+                  className="mt-4 bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition"
+                >
+                  Apply Now
+                </button>
+              </Link>
             </div>
           ))
         ) : (

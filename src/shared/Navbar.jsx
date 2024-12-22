@@ -36,6 +36,7 @@ function Navbar() {
               <li><NavLink to="/" activeClassName="text-orange-400">Home</NavLink></li>
               <li><NavLink to="/my-application" activeClassName="text-orange-400">MyApplication</NavLink></li>
               <li><NavLink to="/addJob" activeClassName="text-orange-400">Add Job</NavLink></li>
+             <li><NavLink to="/my-posted-jobs" activeClassName="text-orange-400">MyPostedJobs</NavLink></li>
              <li><NavLink to="/about" activeClassName="text-orange-400">About</NavLink></li>
             </ul>
           </div>
@@ -47,6 +48,7 @@ function Navbar() {
             <li><NavLink to="/" activeClassName="text-orange-400">Home</NavLink></li>
             <li><NavLink to="/my-application" activeClassName="text-orange-400">MyApplication</NavLink></li>
             <li><NavLink to="/addJob" activeClassName="text-orange-400">Add Job</NavLink></li>
+            <li><NavLink to="/my-posted-jobs" activeClassName="text-orange-400">MyPostedJobs</NavLink></li>
             <li><NavLink to="/about" activeClassName="text-orange-400">About</NavLink></li>
           </ul>
         </div>

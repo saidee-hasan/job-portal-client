@@ -1,16 +1,46 @@
 import React from 'react';
+import Swal from 'sweetalert2';
+import useAuth from '../hooks/useAuth';
 
 function AddJobs() {
+  const { user } = useAuth();
 
   const handleAddToJob = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const initialData = Object.fromEntries(formData.entries());
     console.log(initialData);
-    const {salaryMin ,salaryMax ,currency ,...newJob } = initialData;
-    newJob.salaryMin ={salaryMin,salaryMax,currency}
-    console.log(newJob)
-  }
+
+    // Extract salary details and bundle them into one object
+    const { salaryMin, salaryMax, currency, ...newJob } = initialData;
+    newJob.salaryRange = { min: salaryMin, max: salaryMax, currency };
+    
+    console.log(newJob);
+
+    // Send data to the backend
+    fetch('http://localhost:5000/jobs', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newJob),
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.insertedId) {
+          Swal.fire({
+            title: "Good job!",
+            text: "The job has been successfully added!",
+            icon: "success",
+          });
+        }
+      })
+      .catch(error => {
+        Swal.fire({
+          title: "Error!",
+          text: "Something went wrong while adding the job.",
+          icon: "error",
+        });
+      });
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-8">
@@ -119,7 +149,8 @@ function AddJobs() {
             <label className="label">
               <span className="label-text">Currency</span>
             </label>
-            <select name="currency" className="select select-bordered w-full">
+            <select name="currency" className="select select-bordered w-full" required>
+              <option value="">Select currency</option>
               <option value="bdt">BDT</option>
               <option value="usd">USD</option>
               <option value="eur">EUR</option>
@@ -148,6 +179,7 @@ function AddJobs() {
             <input
               type="email"
               name="hr_email"
+              value={user?.email}
               placeholder="Enter HR email"
               className="input input-bordered w-full"
               required
