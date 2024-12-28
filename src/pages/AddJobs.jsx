@@ -1,21 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import useAuth from '../hooks/useAuth';
 
 function AddJobs() {
   const { user } = useAuth();
+  const [loading, setLoading] = useState(false);
 
   const handleAddToJob = (e) => {
     e.preventDefault();
+    setLoading(true); // Show loading state during submission
+    
     const formData = new FormData(e.target);
     const initialData = Object.fromEntries(formData.entries());
-    console.log(initialData);
 
-    // Extract salary details and bundle them into one object
+    // Validate salary range
     const { salaryMin, salaryMax, currency, ...newJob } = initialData;
+    if (parseFloat(salaryMin) >= parseFloat(salaryMax)) {
+      Swal.fire({
+        title: "Error!",
+        text: "Minimum salary cannot be greater than or equal to maximum salary.",
+        icon: "error",
+      });
+      setLoading(false);
+      return;
+    }
+
     newJob.salaryRange = { min: salaryMin, max: salaryMax, currency };
-    
-    console.log(newJob);
 
     // Send data to the backend
     fetch('http://localhost:5000/jobs', {
@@ -23,23 +33,25 @@ function AddJobs() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newJob),
     })
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         if (data.insertedId) {
           Swal.fire({
             title: "Good job!",
             text: "The job has been successfully added!",
             icon: "success",
           });
+          e.target.reset(); // Reset form after submission
         }
       })
-      .catch(error => {
+      .catch((error) => {
         Swal.fire({
           title: "Error!",
           text: "Something went wrong while adding the job.",
           icon: "error",
         });
-      });
+      })
+      .finally(() => setLoading(false)); // Reset loading state
   };
 
   return (
@@ -179,10 +191,11 @@ function AddJobs() {
             <input
               type="email"
               name="hr_email"
-              value={user?.email}
+              value={user?.email || ""}
               placeholder="Enter HR email"
               className="input input-bordered w-full"
               required
+              disabled={!user}
             />
           </div>
 
@@ -215,7 +228,9 @@ function AddJobs() {
 
           {/* Submit Button */}
           <div className="form-control mt-6">
-            <button type="submit" className="btn btn-primary w-full">Submit Job</button>
+            <button type="submit" className="btn btn-primary w-full" disabled={loading}>
+              {loading ? "Submitting..." : "Submit Job"}
+            </button>
           </div>
         </form>
       </div>

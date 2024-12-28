@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import Swal from 'sweetalert2';
 
 function JobsDetails() {
-  const data = useLoaderData();
+  const data = useLoaderData(); // This assumes data is fetched through useLoaderData
   const { id } = useParams();
   const { user } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -13,6 +13,17 @@ function JobsDetails() {
   const [coverLetter, setCoverLetter] = useState('');
   const [githubLink, setGithubLink] = useState(''); 
 
+  const navigate = useNavigate();
+
+  // Ensure data exists before attempting to render job details
+  if (!data) {
+    return <div>Loading...</div>; // You can replace this with a loading spinner
+  }
+
+  // Check if responsibilities and requirements exist before using map
+  const responsibilities = data.responsibilities || [];
+  const requirements = data.requirements || [];
+
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
@@ -20,7 +31,7 @@ function JobsDetails() {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
-const navigate = useNavigate()
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -29,10 +40,8 @@ const navigate = useNavigate()
       applicant_email: user.email,
       applicant_name: name,
       applicant_letter: coverLetter,
-      githubLink
+      githubLink,
     };
-
-
 
     fetch('http://localhost:5000/jobsApplication', {
       method: 'POST',
@@ -40,29 +49,21 @@ const navigate = useNavigate()
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(jobApplication),
-    }).then(res =>res.json())
-    .then(data =>{
-      if(data.insertedId){
-        Swal.fire({
-          title: "Good job!",
-          text: "You clicked the button!",
-          icon: "success"
-        });
-
-     
-
-        setIsModalOpen(false);
-        navigate('/my-application')
-      }
     })
-
-
-
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.insertedId) {
+          Swal.fire({
+            title: "Good job!",
+            text: "You clicked the button!",
+            icon: "success",
+          });
+          setIsModalOpen(false);
+          navigate('/my-application');
+        }
+      });
 
     console.log(jobApplication);
-
-
-  
   };
 
   return (
@@ -73,7 +74,9 @@ const navigate = useNavigate()
         className="w-16 h-16 mb-4 rounded-full border border-gray-300"
       />
       <h1 className="text-3xl font-semibold text-gray-900 mb-2">{data.title}</h1>
-      <p className="text-gray-500 mb-2">{data.location} - {data.jobType}</p>
+      <p className="text-gray-500 mb-2">
+        {data.location} - {data.jobType}
+      </p>
       <p className="text-gray-700 mb-4">{data.description}</p>
 
       <h2 className="text-xl font-semibold text-gray-800 mb-2">Company: {data.company}</h2>
@@ -81,21 +84,21 @@ const navigate = useNavigate()
 
       <h3 className="text-lg font-semibold text-gray-800 mb-2">Responsibilities:</h3>
       <ul className="list-disc list-inside mb-4">
-        {data.responsibilities.map((responsibility, index) => (
+        {responsibilities.map((responsibility, index) => (
           <li key={index} className="text-gray-700">{responsibility}</li>
         ))}
       </ul>
 
       <h3 className="text-lg font-semibold text-gray-800 mb-2">Requirements:</h3>
       <ul className="list-disc list-inside mb-4">
-        {data.requirements.map((requirement, index) => (
+        {requirements.map((requirement, index) => (
           <li key={index} className="text-gray-700">{requirement}</li>
         ))}
       </ul>
 
       <h3 className="text-lg font-semibold text-gray-800 mb-2">Salary Range:</h3>
       <p className="text-gray-700">
-        {data.salaryRange.min} - {data.salaryRange.max} {data.salaryRange.currency}
+        {data.salaryRange?.min} - {data.salaryRange?.max} {data.salaryRange?.currency}
       </p>
 
       <h3 className="text-lg font-semibold text-gray-800 mb-2">Application Deadline:</h3>
