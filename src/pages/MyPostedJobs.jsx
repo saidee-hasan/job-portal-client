@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../hooks/useAuth';
+import { Link } from 'react-router-dom';
 
 function MyPostedJobs() {
     const [jobs, setJobs] = useState([]);
@@ -25,7 +26,7 @@ function MyPostedJobs() {
     }, [user?.email]);
 
     return (
-        <div className='mt-16'>
+        <div className='mt-16 container mx-auto'>
             <h2 className='text-2xl font-bold mb-4'>My Posted Jobs</h2>
             {jobs.length > 0 ? (
                 <div className="overflow-x-auto">
@@ -37,6 +38,7 @@ function MyPostedJobs() {
                                 <th className="py-3 px-6 text-left">Applicant Email</th>
                                 <th className="py-3 px-6 text-left">Job Type</th>
                                 <th className="py-3 px-6 text-left">Application Deadline</th>
+                                <th className="py-3 px-6 text-left">View Application</th>
                             </tr>
                         </thead>
                         <tbody className="text-gray-600 text-sm font-light">
@@ -47,6 +49,7 @@ function MyPostedJobs() {
                                     <td className="py-3 px-6">{job.hr_email}</td>
                                     <td className="py-3 px-6">{job.jobType}</td>
                                     <td className="py-3 px-6">{job.applicationDeadline}</td>
+                                    <td className="py-3 px-6"><Link className='text-green-600' to={'/viewApplication'}>View Application</Link></td>
                                 </tr>
                             ))}
                         </tbody>
