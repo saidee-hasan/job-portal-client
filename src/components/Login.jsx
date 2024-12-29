@@ -7,17 +7,27 @@ import { useNavigate } from 'react-router-dom';
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { loginUser, user } = useContext(AuthContext);
-  const navigate = useNavigate();  // Hook for navigation
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const { loginUser , user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    loginUser(email, password);
-    console.log('email:', email);
-    console.log('Password:', password);
+    setLoading(true);
+    setError(null); // Reset error state
+
+    try {
+      await loginUser (email, password);
+      console.log('email:', email);
+      console.log('Password:', password);
+    } catch (err) {
+      setError('Login failed. Please check your credentials.');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Redirect to home page if user is already logged in
   useEffect(() => {
     if (user) {
       navigate('/'); // Navigate to home page if user is authenticated
@@ -34,11 +44,12 @@ function Login() {
       {/* Login Form */}
       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm">
         <h2 className="text-2xl font-bold mb-4 text-center text-primary">Login</h2>
+        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email:</label>
             <input
-              type="text"
+              type="email"
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -59,11 +70,21 @@ function Login() {
           </div>
           <button
             type="submit"
-            className="w-full bg-primary text-white font-semibold py-2 rounded-md hover:bg-primary-dark transition duration-200"
+            disabled={loading}
+            className={`w-full ${loading ? 'bg-gray-400' : 'bg-primary'} text-white font-semibold py-2 rounded-md hover:bg-primary-dark transition duration-200`}
           >
-            Login
+            {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
+        <p className="mt-4 text-center">
+          Don't have an account?{' '}
+          <button
+            onClick={() => navigate('/register')} // Navigate to the registration page
+            className="text-primary hover:underline"
+          >
+            Register here
+          </button>
+        </p>
       </div>
     </div>
   );
