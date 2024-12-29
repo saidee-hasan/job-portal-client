@@ -1,20 +1,42 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../hooks/useAuth';
+import { linkWithCredential } from 'firebase/auth';
+import axios from 'axios';
+import useAxiosSecure from '../hooks/useAxiosSecure';
 
 function MyApplication() {
     const { user } = useAuth();
     const [jobs, setJobs] = useState([]);
-
+    const axiosSecure = useAxiosSecure()
     useEffect(() => {
-        fetch(`http://localhost:5000/jobs-application?email=${user.email}`)
-            .then((res) => res.json())
-            .then((data) => {
-                setJobs(data);
-            })
-            .catch((error) => {
+
+        const fetchJobs = async () => {
+
+            try {
+
+                const response = await axiosSecure.get(`http://localhost:5000/jobs-application`, {
+
+                    params: { email: user.email },
+                    withCredentials: true,
+
+
+                });
+
+                setJobs(response.data);
+
+            } catch (error) {
+
                 console.error('Error fetching jobs:', error);
-            });
+
+            }
+
+        };
+
+
+        fetchJobs();
+
     }, [user.email]);
+
 
     return (
         <div className="md:mt-16  mt-20 container mx-auto  px-4">
