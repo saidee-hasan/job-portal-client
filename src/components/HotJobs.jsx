@@ -1,23 +1,40 @@
 import React, { useState, useEffect } from "react";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { Link, useLoaderData } from "react-router-dom";
-
+import Rocket from"../assets/rocket.json"
+import Lottie from "lottie-react";
 function HotJobs() {
   const data = useLoaderData(); // Fetching data using useLoaderData
   const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true); // Track loading state
 
   useEffect(() => {
-    // Assuming data is an array of job objects
-    if (Array.isArray(data)) {
-      setJobs(data);
-    } else {
-      setJobs([data]); // If it's a single job object, wrap it in an array
-    }
+    // Simulate a 2-second loading delay
+    const timer = setTimeout(() => {
+      if (Array.isArray(data)) {
+        setJobs(data);
+      } else {
+        setJobs([data]); // If it's a single job object, wrap it in an array
+      }
+      setLoading(false); // Set loading to false after 2 seconds
+    }, 2000);
+
+    // Cleanup the timeout on component unmount
+    return () => clearTimeout(timer);
   }, [data]);
 
   const handleApplyNow = (job) => {
     // Handle apply functionality here
   };
+
+  if (loading) {
+    // Display loader if loading is true
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="loader"><Lottie className="w-96" animationData={Rocket}/></div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto p-4">
@@ -55,7 +72,6 @@ function HotJobs() {
 
               <h4 className="font-semibold mt-4">Requirements:</h4>
               <ul className="list-disc list-inside mb-4">
-                {/* Check if job.requirements is an array before mapping */}
                 {(Array.isArray(job.requirements) && job.requirements.length > 0) ? (
                   job.requirements.map((req, index) => (
                     <li key={index} className="text-gray-600 border-b p-2">

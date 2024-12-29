@@ -2,7 +2,6 @@ import { motion } from 'framer-motion'; // Import motion from framer-motion
 import { TypeAnimation } from 'react-type-animation'; // Import TypeAnimation
 import BannerImage from '../assets/banner.png';
 import Cricle from"../assets/Group.png"
-
 function Banner() {
   return (
     <div>

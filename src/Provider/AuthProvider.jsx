@@ -10,6 +10,7 @@ import {
 import React, { createContext, useEffect, useState } from "react";
 export const AuthContext = createContext(null);
 import { auth } from "../../firebase.init";
+import axios from "axios";
 
 function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -31,11 +32,34 @@ function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-    
-        console.log("Currently logged in User:", currentUser);
-        setUser(currentUser)
-     setLoading(false)
-     
+      if (currentUser?.email) {
+        const user = { email: currentUser.email };
+        axios
+          .post("http://localhost:5000/jwt", user, {
+            withCredentials: true,
+          })
+          .then((res) => {
+            console.log(res.data);
+            setLoading(false);
+          });
+      } else {
+        axios
+          .post(
+            "http://localhost:5000/logout",
+            {},
+            {
+              withCredentials: true,
+            }
+          )
+          .then((res) => {
+            console.log(res.data);
+            setLoading(false);
+          });
+      }
+
+      setUser(currentUser);
+      setLoading(false);
+
     });
 
     // Cleanup function to unsubscribe from the listener
