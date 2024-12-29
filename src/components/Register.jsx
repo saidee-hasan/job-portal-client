@@ -9,14 +9,21 @@ export default function Register() {
   const { register, handleSubmit, formState: { errors }, watch } = useForm();
   const { createUser } = useContext(AuthContext);
   const password = watch("password");
-const location = useLocation();
-const navigate = useNavigate();
-const form = location.state || '/';
-  const onSubmit = (data) => {
-    createUser(data.email, data.password)
-    .then(res=>{
-      navigate(form)
-    })
+  const location = useLocation();
+  const navigate = useNavigate();
+  const form = location.state || '/'; // Default to root if no state is passed
+
+  const onSubmit = async (data) => {
+    try {
+      // Attempt to create user with provided email and password
+      const res = await createUser(data.email, data.password);
+      
+      // If user creation is successful, navigate to the target form location
+      navigate(form);
+    } catch (error) {
+      console.error('Registration error:', error);
+      // You could add an error state to show an error message to the user if needed
+    }
     console.log(data);
   };
 
