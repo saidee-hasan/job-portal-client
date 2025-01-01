@@ -2,16 +2,31 @@ import React, { useState } from 'react'
 import useJobs from '../hooks/useJobs'
 import { FaMapLocationDot } from 'react-icons/fa6'
 import { Link } from 'react-router-dom'
+import { h1 } from 'motion/react-client';
 
 
 function AllJobs() {
-    const {jobs,loading} = useJobs();
     const [sort,setSort]= useState(false);
+    const {jobs,loading} = useJobs(sort);
     
 
+console.log(sort)
+
+if(loading){
+    return <h1>Job loading..........................</h1>
+}
   return (
-    <div>
-       <div className="grid grid-cols-1 container mx-auto mt-28 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div className='mt-28 container mx-auto'>
+        <div className="bg-base-200  py-5 pl-2">
+<button 
+  onClick={() => setSort(!sort)} 
+  className={`btn  cursor-pointer ${sort ? 'btn-success' : 'btn-neutral'} transition-all duration-200`}
+>
+  {sort ? 'Sorted By Salary' : 'Sort By Salary'}
+</button>
+</div>
+
+       <div className="grid grid-cols-1   sm:grid-cols-2 mt-5 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {jobs.length > 0 ? (
           jobs.map((job) => (
             <div
