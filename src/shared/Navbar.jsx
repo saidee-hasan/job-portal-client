@@ -38,6 +38,7 @@ function Navbar() {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
             >
               <li><NavLink to="/" activeClassName="text-orange-400">Home</NavLink></li>
+              <li><NavLink to="/all-jobs" activeClassName="text-orange-400">All jobs</NavLink></li>
               <li><NavLink to="/addJob" activeClassName="text-orange-400">Add Job</NavLink></li>
               {user && (
                 <li><NavLink to="/my-application" activeClassName="text-orange-400">My Bookings</NavLink></li>
@@ -51,6 +52,8 @@ function Navbar() {
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
             <li><NavLink to="/" activeClassName="text-orange-400">Home</NavLink></li>
+            
+            <li><NavLink to="/all-jobs" activeClassName="text-orange-400">All jobs</NavLink></li>
             <li><NavLink to="/addJob" activeClassName="text-orange-400">Add Job</NavLink></li>
             {user && (
               <li><NavLink to="/my-application" activeClassName="text-orange-400">My Bookings</NavLink></li>
