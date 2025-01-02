@@ -47,7 +47,7 @@ function Navbar() {
             </ul>
           </div>
           <img className="w-8" src={Logo} alt="Logo" />
-          <NavLink to="/" className="p-2 font-bold text-xl">Apply <span className="text-orange-400">Jobs</span></NavLink>
+          <NavLink to="/" className="p-2 font-bold text-xl flex gap-2"> <span className="hidden md:block"> Apply</span>  <span className="text-orange-400 mt-0">Jobs</span></NavLink>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
