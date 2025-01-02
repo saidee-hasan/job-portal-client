@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import useJobs from "../hooks/useJobs";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import { BiSearch } from "react-icons/bi";
+import { FaSearch } from "react-icons/fa";
 
 function AllJobs() {
   const [sort, setSort] = useState(false);
@@ -13,7 +13,7 @@ function AllJobs() {
 
   // Loading State
   if (loading) {
-    return <h1>Loading jobs...</h1>;
+    return <h1 className="text-center mt-8 text-2xl font-semibold">Loading jobs...</h1>;
   }
 
   // Handling Search Input Changes
@@ -32,48 +32,58 @@ function AllJobs() {
   };
 
   return (
-    <div className="mt-28 container mx-auto px-4">
-      <div className="bg-base-200 py-5 pl-2 flex items-center flex-wrap">
-        <BiSearch className="mr-2" />
+    <div className="mt-16 container mx-auto px-4">
+      {/* Filter and Search Section */}
+      <div className="bg-base-200 py-5 px-4 flex flex-col md:flex-row items-center gap-4">
+        {/* Sort Button */}
         <button
           onClick={() => setSort(!sort)}
-          className={`btn cursor-pointer ${
-            sort ? "btn-success" : "btn-neutral"
-          } transition-all duration-200`}
+          className={`btn cursor-pointer ${sort ? "btn-success" : "btn-neutral"} transition-all duration-200`}
         >
           {sort ? "Sorted By Salary" : "Sort By Salary"}
         </button>
-        <input
-          onChange={handleSearchChange} // Changed to onChange for consistency
-          type="text"
-          className="input ml-4 w-full sm:w-64"
-          placeholder="Search By Job Title or Location"
-        />
-        <input
-          onChange={handleSalaryChange} // Changed to onChange for consistency
-          name="minSalary"
-          value={minSalary}
-          type="number"
-          className="input ml-4 w-full sm:w-32"
-          placeholder="Min Salary"
-        />
-        <input
-          onChange={handleSalaryChange} // Changed to onChange for consistency
-          name="maxSalary"
-          value={maxSalary}
-          type="number"
-          className="input ml-4 w-full sm:w-32"
-          placeholder="Max Salary"
-        />
+
+        {/* Search Input with Icon */}
+        <div className="relative w-full sm:w-72 md:w-96">
+          <input
+            onKeyUp={handleSearchChange}
+            type="text"
+            className="input pl-10 w-full border rounded-md focus:ring-2 focus:ring-blue-400"
+            placeholder="Search By Job Title or Location"
+          />
+          <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+        </div>
+
+        {/* Salary Inputs */}
+        <div className="flex flex-wrap gap-4 md:flex-nowrap">
+          <input
+            onChange={handleSalaryChange}
+            name="minSalary"
+            value={minSalary}
+            type="number"
+            className="input w-full sm:w-32 border rounded-md focus:ring-2 focus:ring-blue-400"
+            placeholder="Min Salary"
+          />
+          <input
+            onChange={handleSalaryChange}
+            name="maxSalary"
+            value={maxSalary}
+            type="number"
+            className="input w-full sm:w-32 border rounded-md focus:ring-2 focus:ring-blue-400"
+            placeholder="Max Salary"
+          />
+        </div>
       </div>
 
+      {/* Job Cards Section */}
       <div className="grid grid-cols-1 sm:grid-cols-2 mt-5 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {jobs.length > 0 ? (
           jobs.map((job) => (
             <div
               key={job._id}
-              className="bg-white shadow-lg rounded-lg p-6 transition-transform transform hover:scale-105"
+              className="bg-white shadow-lg rounded-lg p-6 transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
             >
+              {/* Job Header */}
               <div className="flex items-center mb-4">
                 <img
                   src={job.company_logo}
@@ -81,16 +91,18 @@ function AllJobs() {
                   className="w-16 h-16 rounded-full object-cover"
                 />
                 <div className="ml-4">
-                  <h2 className="text-xl font-semibold">{job.title}</h2>
-                  <p className="text-gray-600 gap-3 flex">
+                  <h2 className="text-xl font-semibold text-gray-800">{job.title}</h2>
+                  <p className="text-gray-600 flex items-center gap-2">
                     <FaMapLocationDot className="mt-1" color="green" />
                     <strong>{job.location}</strong>
                   </p>
                 </div>
               </div>
-              <h3 className="text-gray-600 text-lg font-bold mb-2">
-                {job.category}
-              </h3>
+
+              {/* Job Category */}
+              <h3 className="text-gray-600 text-lg font-bold mb-2">{job.category}</h3>
+
+              {/* Job Description */}
               <p className="text-gray-600">
                 <strong>Application Deadline:</strong> {job.applicationDeadline}
               </p>
@@ -98,25 +110,25 @@ function AllJobs() {
                 <strong>Description:</strong> {job.description}
               </p>
 
+              {/* Job Requirements */}
               <h4 className="font-semibold mt-4">Requirements:</h4>
-              <ul className="list-disc list-inside mb-4">
-                {Array.isArray(job.requirements) &&
-                job.requirements.length > 0 ? (
+              <ul className="list-disc list-inside mb-4 text-gray-600">
+                {Array.isArray(job.requirements) && job.requirements.length > 0 ? (
                   job.requirements.map((req, index) => (
-                    <li key={index} className="text-gray-600 border-b p-2">
-                      {req}
-                    </li>
+                    <li key={index}>{req}</li>
                   ))
                 ) : (
-                  <li className="text-gray-600">No requirements listed</li>
+                  <li>No requirements listed</li>
                 )}
               </ul>
 
+              {/* Salary Range */}
               <p className="text-gray-600">
-                <strong>Salary Range:</strong> {job.salaryRange.min} -{" "}
-                {job.salaryRange.max} {job.salaryRange.currency}
+                <strong>Salary Range:</strong> {job.salaryRange.min} - {job.salaryRange.max}{" "}
+                {job.salaryRange.currency}
               </p>
 
+              {/* Apply Button */}
               <Link to={`/jobs/${job._id}`}>
                 <button className="mt-4 bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition">
                   Apply Now
@@ -125,7 +137,7 @@ function AllJobs() {
             </div>
           ))
         ) : (
-          <p className="text-center">No jobs available at the moment.</p>
+          <p className="text-center text-gray-600">No jobs available at the moment.</p>
         )}
       </div>
     </div>
