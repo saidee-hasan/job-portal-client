@@ -25,7 +25,7 @@ function AddJobs() {
       return;
     }
 
-    newJob.salaryRange = { min: salaryMin, max: salaryMax, currency };
+    newJob.salaryRange = { min: parseInt(salaryMin) , max:parseInt(salaryMax), currency };
 
     // Send data to the backend
     fetch('http://localhost:5000/jobs', {
