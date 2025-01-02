@@ -3,12 +3,14 @@ import useJobs from '../hooks/useJobs'
 import { FaMapLocationDot } from 'react-icons/fa6'
 import { Link } from 'react-router-dom'
 import { h1 } from 'motion/react-client';
+import { BiSearch } from 'react-icons/bi';
 
 
 function AllJobs() {
     const [sort,setSort]= useState(false);
-    const {jobs,loading} = useJobs(sort);
-    
+    const [search,setSearch]=useState("")
+    const {jobs,loading} = useJobs(sort,search);
+
 
 console.log(sort)
 
@@ -18,12 +20,22 @@ if(loading){
   return (
     <div className='mt-28 container mx-auto'>
         <div className="bg-base-200  py-5 pl-2">
+
+<BiSearch/>
 <button 
   onClick={() => setSort(!sort)} 
   className={`btn  cursor-pointer ${sort ? 'btn-success' : 'btn-neutral'} transition-all duration-200`}
 >
   {sort ? 'Sorted By Salary' : 'Sort By Salary'}
 </button>
+<input
+onKeyUp={(e)=> setSearch(e.target.value)}
+        type="text"
+        className="input"  // You can style this class in your CSS or use TailwindCSS classes
+        placeholder="Search By Jobs Location"
+       
+       
+      />
 </div>
 
        <div className="grid grid-cols-1   sm:grid-cols-2 mt-5 lg:grid-cols-3 xl:grid-cols-4 gap-6">
