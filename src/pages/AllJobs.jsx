@@ -7,7 +7,7 @@ import { BiSearch } from "react-icons/bi";
 function AllJobs() {
   const [sort, setSort] = useState(false);
   const [search, setSearch] = useState("");
-  const [minSalary, setMinSalary] = useState("");
+  const [minSalary, setMinSalary] = useState(0);
   const [maxSalary, setMaxSalary] = useState("");
   const { jobs, loading } = useJobs(sort, search, minSalary, maxSalary);
 
@@ -32,9 +32,9 @@ function AllJobs() {
   };
 
   return (
-    <div className="mt-28 container mx-auto">
-      <div className="bg-base-200 py-5 pl-2 flex items-center">
-        <BiSearch />
+    <div className="mt-28 container mx-auto px-4">
+      <div className="bg-base-200 py-5 pl-2 flex items-center flex-wrap">
+        <BiSearch className="mr-2" />
         <button
           onClick={() => setSort(!sort)}
           className={`btn cursor-pointer ${
@@ -46,7 +46,7 @@ function AllJobs() {
         <input
           onChange={handleSearchChange} // Changed to onChange for consistency
           type="text"
-          className="input ml-4"
+          className="input ml-4 w-full sm:w-64"
           placeholder="Search By Job Title or Location"
         />
         <input
@@ -54,7 +54,7 @@ function AllJobs() {
           name="minSalary"
           value={minSalary}
           type="number"
-          className="input ml-4"
+          className="input ml-4 w-full sm:w-32"
           placeholder="Min Salary"
         />
         <input
@@ -62,7 +62,7 @@ function AllJobs() {
           name="maxSalary"
           value={maxSalary}
           type="number"
-          className="input ml-4"
+          className="input ml-4 w-full sm:w-32"
           placeholder="Max Salary"
         />
       </div>
