@@ -14,20 +14,64 @@ import MyPostedJobs from "../pages/MyPostedJobs";
 import ViewApplication from "../pages/ViewApplication";
 import AllJobs from "../pages/AllJobs";
 
-const router =  createBrowserRouter([
-    {path:"/",element:<MainLayout/>,children:[
-        {path:"/",element:<Home/>,loader:()=> fetch('http://localhost:5000/jobs')},
-        {path:'/addJob',element:<PrivateRoute><AddJobs/></PrivateRoute>},
-        {path:"/my-posted-jobs",element: <PrivateRoute><MyPostedJobs/></PrivateRoute>},
-        {path:"/viewApplication",element: <PrivateRoute><ViewApplication/></PrivateRoute>},
-        {path:"/all-jobs",element:<AllJobs/>},
-        {path:"/about",element:<About/>},
-        {path:"/my-application",element: <PrivateRoute><MyApplication/></PrivateRoute>,loader:()=> fetch('http://localhost:5000/jobs')},
-        {path:"/jobs/:id",element:<PrivateRoute><JobsDetails/></PrivateRoute>  ,loader:({params})=> fetch(`http://localhost:5000/jobs/${params.id}`)},
-    ]},
-    {path:"/register",element:<Register/>},
-    {path:"/login",element:<Login/>},
-   
-
-])
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <MainLayout />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+        loader: () => fetch("https://server-jobs.vercel.app/jobs"),
+      },
+      {
+        path: "/addJob",
+        element: (
+          <PrivateRoute>
+            <AddJobs />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/my-posted-jobs",
+        element: (
+          <PrivateRoute>
+            <MyPostedJobs />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/viewApplication",
+        element: (
+          <PrivateRoute>
+            <ViewApplication />
+          </PrivateRoute>
+        ),
+      },
+      { path: "/all-jobs", element: <AllJobs /> },
+      { path: "/about", element: <About /> },
+      {
+        path: "/my-application",
+        element: (
+          <PrivateRoute>
+            <MyApplication />
+          </PrivateRoute>
+        ),
+        loader: () => fetch("https://server-jobs.vercel.app/jobs"),
+      },
+      {
+        path: "/jobs/:id",
+        element: (
+          <PrivateRoute>
+            <JobsDetails />
+          </PrivateRoute>
+        ),
+        loader: ({ params }) =>
+          fetch(`https://server-jobs.vercel.app/jobs/${params.id}`),
+      },
+    ],
+  },
+  { path: "/register", element: <Register /> },
+  { path: "/login", element: <Login /> },
+]);
 export default router;

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import Swal from 'sweetalert2';
-import useAuth from '../hooks/useAuth';
+import React, { useState } from "react";
+import Swal from "sweetalert2";
+import useAuth from "../hooks/useAuth";
 
 function AddJobs() {
   const { user } = useAuth();
@@ -9,7 +9,7 @@ function AddJobs() {
   const handleAddToJob = (e) => {
     e.preventDefault();
     setLoading(true); // Show loading state during submission
-    
+
     const formData = new FormData(e.target);
     const initialData = Object.fromEntries(formData.entries());
 
@@ -25,12 +25,16 @@ function AddJobs() {
       return;
     }
 
-    newJob.salaryRange = { min: parseInt(salaryMin) , max:parseInt(salaryMax), currency };
+    newJob.salaryRange = {
+      min: parseInt(salaryMin),
+      max: parseInt(salaryMax),
+      currency,
+    };
 
     // Send data to the backend
-    fetch('http://localhost:5000/jobs', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    fetch("https://server-jobs.vercel.app/jobs", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newJob),
     })
       .then((res) => res.json())
@@ -57,7 +61,9 @@ function AddJobs() {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-8">
       <div className="bg-white shadow-lg rounded-lg w-full max-w-2xl p-8">
-        <h1 className="text-3xl font-bold text-gray-800 text-center mb-6">Add Job</h1>
+        <h1 className="text-3xl font-bold text-gray-800 text-center mb-6">
+          Add Job
+        </h1>
         <form onSubmit={handleAddToJob} className="space-y-6">
           {/* Title */}
           <div className="form-control">
@@ -92,7 +98,11 @@ function AddJobs() {
             <label className="label">
               <span className="label-text">Job Type</span>
             </label>
-            <select name="jobType" className="select select-bordered w-full" required>
+            <select
+              name="jobType"
+              className="select select-bordered w-full"
+              required
+            >
               <option value="">Select job type</option>
               <option value="Full-time">Full-time</option>
               <option value="Part-time">Part-time</option>
@@ -161,7 +171,11 @@ function AddJobs() {
             <label className="label">
               <span className="label-text">Currency</span>
             </label>
-            <select name="currency" className="select select-bordered w-full" required>
+            <select
+              name="currency"
+              className="select select-bordered w-full"
+              required
+            >
               <option value="">Select currency</option>
               <option value="bdt">BDT</option>
               <option value="usd">USD</option>
@@ -228,7 +242,11 @@ function AddJobs() {
 
           {/* Submit Button */}
           <div className="form-control mt-6">
-            <button type="submit" className="btn btn-primary w-full" disabled={loading}>
+            <button
+              type="submit"
+              className="btn btn-primary w-full"
+              disabled={loading}
+            >
               {loading ? "Submitting..." : "Submit Job"}
             </button>
           </div>
